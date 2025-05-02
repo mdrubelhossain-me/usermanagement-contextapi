@@ -1,29 +1,35 @@
 import React, { useState } from "react";
 
-const NewUser: React.FC = () => {
-  const [username, setUsername] = useState("");
+type NewUserProps = {
+  handleAddUser: (user: { id: number; name: string }) => void;
+};
 
-  const handleUserNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
+const NewUser: React.FC<NewUserProps> = ({ handleAddUser }) => {
+  const [name, setName] = useState("");
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newUser = { id: new Date().getTime().toString(), username: username };
-    console.log(newUser);
-    setUsername(""); // Clear the input field after submission
-    // Assuming you have a function to add the new user to the list
+    const newUser = {
+      id: Date.now(),
+      name: name,
+    };
+    handleAddUser(newUser);
+    setName(""); // Clear the input field
   };
 
   return (
     <div>
       <h1>New User</h1>
-      <form action="" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
-          name="username"
-          value={username}
-          onChange={handleUserNameChange}
+          name="name"
+          value={name}
+          onChange={handleNameChange}
         />
         <button type="submit">Add User</button>
       </form>

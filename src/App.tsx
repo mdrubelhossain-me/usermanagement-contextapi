@@ -2,8 +2,13 @@ import { useState } from "react";
 import Users from "./components/Users";
 import NewUser from "./components/NewUser";
 
+type User = {
+  id: number;
+  name: string;
+};
+
 function App() {
-  const [users, setUsers] = useState([
+  const [users, setUsers] = useState<User[]>([
     { id: 1, name: "John Doe" },
     { id: 2, name: "Jane Doe" },
     { id: 3, name: "Jack Doe" },
@@ -21,9 +26,13 @@ function App() {
     setUsers(newUsers);
   };
 
+  const handleAddUser = (user: User) => {
+    setUsers([...users, user]);
+  };
+
   return (
     <div>
-      <NewUser/>
+      <NewUser handleAddUser={handleAddUser} />
       <br />
       <Users users={users} handleDeleteUser={handleDeleteUser} />
     </div>
