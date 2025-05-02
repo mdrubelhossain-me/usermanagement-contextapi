@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Users from "./components/Users";
+import NewUser from "./components/NewUser";
 
 function App() {
   const [users, setUsers] = useState([
@@ -22,6 +23,8 @@ function App() {
 
   return (
     <div>
+      <NewUser/>
+      <br />
       <Users users={users} handleDeleteUser={handleDeleteUser} />
     </div>
   );
