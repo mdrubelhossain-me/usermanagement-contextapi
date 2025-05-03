@@ -1,24 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
-type NewUserProps = {
-  handleAddUser: (user: { id: number; name: string }) => void;
+// Define the User type here directly
+type User = {
+  id: number;
+  name: string;
 };
 
-const NewUser: React.FC<NewUserProps> = ({ handleAddUser }) => {
+type UserContextType = {
+  users: User[];
+  setUsers: React.Dispatch<React.SetStateAction<User[]>>;
+};
+
+const NewUser: React.FC = () => {
   const [name, setName] = useState("");
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-  };
+  const userContext = useContext(UserContext) as UserContextType;
+
+  if (!userContext) {
+    throw new Error("UserContext must be used within a UserProvider");
+  }
+
+  const { users, setUsers } = userContext;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newUser = {
+    const trimmedName = name.trim();
+    if (!trimmedName) return;
+
+    const newUser: User = {
       id: Date.now(),
-      name: name,
+      name: trimmedName,
     };
-    handleAddUser(newUser);
-    setName(""); // Clear the input field
+
+    setUsers([...users, newUser]);
+    setName("");
   };
 
   return (
@@ -29,7 +45,7 @@ const NewUser: React.FC<NewUserProps> = ({ handleAddUser }) => {
           type="text"
           name="name"
           value={name}
-          onChange={handleNameChange}
+          onChange={(e) => setName(e.target.value)}
         />
         <button type="submit">Add User</button>
       </form>

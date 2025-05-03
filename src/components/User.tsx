@@ -1,26 +1,23 @@
-import React from 'react';
+import React from "react";
 
-type UserType = {
+
+export type User = {
   id: number;
   name: string;
 };
 
 type UserProps = {
-  user: UserType;
+  user: User;
   handleDeleteUser: (id: number) => void;
 };
 
 const User: React.FC<UserProps> = ({ user, handleDeleteUser }) => {
   const { id, name } = user;
 
-  const handleDelete = () => {
-    handleDeleteUser(id);
-  };
-
   return (
-    <div className='user'>
+    <div className="user">
       <h1>{id} - {name}</h1>
-      <button onClick={handleDelete}>Delete</button>
+      <button onClick={() => handleDeleteUser(id)}>Delete</button>
     </div>
   );
 };

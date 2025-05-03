@@ -1,14 +1,10 @@
 import { useState } from "react";
 import Users from "./components/Users";
 import NewUser from "./components/NewUser";
-
-type User = {
-  id: number;
-  name: string;
-};
+import { UserContext } from "./context/UserContext";
 
 function App() {
-  const [users, setUsers] = useState<User[]>([
+  const [users, setUsers] = useState([
     { id: 1, name: "John Doe" },
     { id: 2, name: "Jane Doe" },
     { id: 3, name: "Jack Doe" },
@@ -21,21 +17,14 @@ function App() {
     { id: 10, name: "Jordan Doe" },
   ]);
 
-  const handleDeleteUser = (id: number) => {
-    const newUsers = users.filter((user) => user.id !== id);
-    setUsers(newUsers);
-  };
-
-  const handleAddUser = (user: User) => {
-    setUsers([...users, user]);
-  };
-
   return (
-    <div>
-      <NewUser handleAddUser={handleAddUser} />
-      <br />
-      <Users users={users} handleDeleteUser={handleDeleteUser} />
-    </div>
+    <UserContext.Provider value={{ users, setUsers }}>
+      <div>
+        <NewUser />
+        <br />
+        <Users />
+      </div>
+    </UserContext.Provider>
   );
 }
 
